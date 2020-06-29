@@ -310,9 +310,9 @@ VP_DM_C_SRCS += common/ptdev.c
 # virtual platform trusty
 VP_TRUSTY_C_SRCS += arch/x86/guest/trusty.c
 VP_TRUSTY_C_SRCS += common/trusty_hypercall.c
-VP_TRUSTY_C_SRCS += arch/x86/seed/seed.c
-VP_TRUSTY_C_SRCS += arch/x86/seed/seed_abl.c
-VP_TRUSTY_C_SRCS += arch/x86/seed/seed_sbl.c
+VP_TRUSTY_C_SRCS += crypto/seed.c
+VP_TRUSTY_C_SRCS += crypto/seed_abl.c
+VP_TRUSTY_C_SRCS += crypto/seed_sbl.c
 
 # virtual platform hypercall
 VP_HCALL_C_SRCS += arch/x86/guest/vmcall.c
