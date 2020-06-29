@@ -21,6 +21,7 @@
  * the macros involved are changed.
  */
 
+#include <boot.h>
 #include <multiboot.h>
 #ifdef CONFIG_MULTIBOOT2
 #include <multiboot2.h>

@@ -7,6 +7,12 @@
 #ifndef MULTIBOOT_H
 #define MULTIBOOT_H
 
+#include <vm_configurations.h>
+
+#ifdef CONFIG_MULTIBOOT2
+#include <multiboot2.h>
+#endif
+
 #define	MULTIBOOT_HEADER_MAGIC		0x1BADB002
 #define	MULTIBOOT_INFO_MAGIC		0x2BADB002U
 
@@ -20,7 +26,19 @@
 #define	MULTIBOOT_INFO_HAS_DRIVES	0x00000080U
 #define	MULTIBOOT_INFO_HAS_LOADER_NAME	0x00000200U
 
+/* extended flags for acrn multiboot info from multiboot2  */
+#define	MULTIBOOT_INFO_HAS_EFI_MMAP	0x00010000U
+#define	MULTIBOOT_INFO_HAS_EFI64	0x00020000U
+
+#define MAX_MMAP_ENTRIES		32U
+#define MAX_BOOTARGS_SIZE		2048U
+/* The modules in multiboot are for kernel and ramdisk of pre-launched VMs and SOS VM */
+#define MAX_MODULE_NUM			(2U * PRE_VM_NUM + 2U * SOS_VM_NUM)
+
 #ifndef ASSEMBLER
+#include <zeropage.h>
+
+extern char *efiloader_sig;
 
 struct multiboot_info {
 	uint32_t               mi_flags;
@@ -86,6 +104,31 @@ struct multiboot_module {
 	uint32_t	mm_string;
 	uint32_t	mm_reserved;
 };
+
+struct acrn_multiboot_info {
+        uint32_t                mi_flags;       /* the flags is back-compatible with multiboot1 */
+
+        const char              *mi_cmdline;
+        const char              *mi_loader_name;
+
+        uint32_t                mi_mods_count;
+        const void              *mi_mods_va;
+        struct multiboot_module mi_mods[MAX_MODULE_NUM];
+
+        uint32_t                mi_drives_length;
+        uint32_t                mi_drives_addr;
+
+        uint32_t                mi_mmap_entries;
+        const void              *mi_mmap_va;
+        struct multiboot_mmap   mi_mmap_entry[MAX_MMAP_ENTRIES];
+
+        const void              *mi_acpi_rsdp_va;
+        struct efi_info         mi_efi_info;
+};
+
+struct acrn_multiboot_info *get_multiboot_info(void);
+void init_multiboot_info(uint32_t eax, uint32_t ebx);
+int32_t sanitize_multiboot_info(uint32_t eax, uint32_t ebx);
 
 #endif	/* ASSEMBLER */
 

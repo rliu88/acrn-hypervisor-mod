@@ -8,7 +8,7 @@
 #include <types.h>
 #include <pgtable.h>
 #include <acpi.h>
-#include <boot.h>
+#include <multiboot.h>
 #include <vboot.h>
 #include <direct_boot.h>
 #include <deprivilege_boot.h>

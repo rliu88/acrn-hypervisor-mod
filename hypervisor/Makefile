@@ -202,9 +202,9 @@ endif
 BOOT_S_SRCS += arch/x86/boot/cpu_primary.S
 BOOT_S_SRCS += arch/x86/boot/cpu_save_boot_ctx.S
 BOOT_S_SRCS += arch/x86/boot/trampoline.S
-BOOT_C_SRCS += boot/multiboot.c
+BOOT_C_SRCS += boot/multiboot/multiboot.c
 ifeq ($(CONFIG_MULTIBOOT2),y)
-BOOT_C_SRCS += boot/multiboot2.c
+BOOT_C_SRCS += boot/multiboot/multiboot2.c
 endif
 BOOT_C_SRCS += boot/reloc.c
 
@@ -253,7 +253,6 @@ ifneq (,$(wildcard $(SCENARIO_CFG_DIR)/pci_dev.c))
 HW_C_SRCS += $(SCENARIO_CFG_DIR)/pci_dev.c
 endif
 HW_C_SRCS += boot/acpi_base.c
-HW_C_SRCS += boot/cmdline.c
 # ACPI parsing component
 # This part should be isolated from FuSa Cert
 ifeq ($(CONFIG_ACPI_PARSE_ENABLED),y)
