@@ -7,18 +7,19 @@
 #include <types.h>
 #include <errno.h>
 #include <pgtable.h>
-#include <boot.h>
+#include <multiboot.h>
 #include <rtl.h>
 #include <logmsg.h>
+#include "multiboot_priv.h"
 
 static struct acrn_multiboot_info acrn_mbi = { 0U };
 
 static int32_t mbi_status;
 
-void init_acrn_multiboot_info(void)
+void init_multiboot_info(uint32_t eax, uint32_t ebx)
 {
-	if (boot_from_multiboot1()) {
-		struct multiboot_info *mbi = (struct multiboot_info *)(hpa2hva_early((uint64_t)boot_regs[1]));
+	if (boot_from_multiboot1(eax, ebx)) {
+		struct multiboot_info *mbi = (struct multiboot_info *)(hpa2hva_early((uint64_t)ebx));
 
 		acrn_mbi.mi_flags = mbi->mi_flags;
 		acrn_mbi.mi_drives_addr = mbi->mi_drives_addr;
@@ -31,32 +32,32 @@ void init_acrn_multiboot_info(void)
 		acrn_mbi.mi_mods_va = (struct multiboot_module *)hpa2hva_early((uint64_t)mbi->mi_mods_addr);
 		mbi_status = 0;
 #ifdef CONFIG_MULTIBOOT2
-	} else if (boot_from_multiboot2()) {
-		mbi_status = multiboot2_to_acrn_mbi(&acrn_mbi, hpa2hva_early((uint64_t)boot_regs[1]));
+	} else if (boot_from_multiboot2(eax)) {
+		mbi_status = multiboot2_to_acrn_mbi(&acrn_mbi, hpa2hva_early((uint64_t)ebx));
 #endif
 	} else {
 		mbi_status = -ENODEV;
 	}
 }
 
-int32_t sanitize_multiboot_info(void)
+int32_t sanitize_multiboot_info(uint32_t eax, uint32_t ebx)
 {
 	uint32_t mmap_entry_size = 0U;
 
-	if (boot_from_multiboot1()) {
+	if (boot_from_multiboot1(eax, ebx)) {
 		pr_info("Multiboot1 detected.");
 		mmap_entry_size = sizeof(struct multiboot_mmap);
 #ifdef CONFIG_MULTIBOOT2
-	} else if (boot_from_multiboot2()) {
+	} else if (boot_from_multiboot2(eax)) {
 		pr_info("Multiboot2 detected.");
 		mmap_entry_size = sizeof(struct multiboot2_mmap_entry);
 	}
 #endif
 
 	if ((acrn_mbi.mi_mmap_entries != 0U) && (acrn_mbi.mi_mmap_va != NULL)) {
-		if (acrn_mbi.mi_mmap_entries > E820_MAX_ENTRIES) {
+		if (acrn_mbi.mi_mmap_entries > MAX_MMAP_ENTRIES) {
 			pr_err("Too many E820 entries %d\n", acrn_mbi.mi_mmap_entries);
-			acrn_mbi.mi_mmap_entries = E820_MAX_ENTRIES;
+			acrn_mbi.mi_mmap_entries = MAX_MMAP_ENTRIES;
 		}
 		(void)memcpy_s((void *)(&acrn_mbi.mi_mmap_entry[0]),
 			(acrn_mbi.mi_mmap_entries * mmap_entry_size),
@@ -72,7 +73,7 @@ int32_t sanitize_multiboot_info(void)
 		acrn_mbi.mi_mods_count = MAX_MODULE_COUNT;
 	}
 	if (acrn_mbi.mi_mods_count != 0U) {
-		if (boot_from_multiboot1() && (acrn_mbi.mi_mods_va != NULL)) {
+		if (boot_from_multiboot1(eax, ebx) && (acrn_mbi.mi_mods_va != NULL)) {
 			(void)memcpy_s((void *)(&acrn_mbi.mi_mods[0]),
 				(acrn_mbi.mi_mods_count * sizeof(struct multiboot_module)),
 				(const void *)acrn_mbi.mi_mods_va,
@@ -88,7 +89,7 @@ int32_t sanitize_multiboot_info(void)
 		mbi_status = -EINVAL;
 	}
 
-	if (boot_from_multiboot2()) {
+	if (boot_from_multiboot2(eax)) {
 		if (acrn_mbi.mi_efi_info.efi_memmap_hi != 0U) {
 			pr_err("the efi mmap address should be less than 4G!");
 			acrn_mbi.mi_flags &= ~MULTIBOOT_INFO_HAS_EFI_MMAP;

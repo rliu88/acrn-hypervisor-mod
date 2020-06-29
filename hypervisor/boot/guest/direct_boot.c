@@ -9,7 +9,7 @@
 #include <types.h>
 #include <e820.h>
 #include <cpu.h>
-#include <boot.h>
+#include <multiboot.h>
 #include <direct_boot.h>
 #include <mmu.h>
 
