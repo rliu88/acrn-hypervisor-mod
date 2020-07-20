@@ -235,7 +235,7 @@ HW_C_SRCS += arch/x86/rdt.c
 HW_C_SRCS += arch/x86/sgx.c
 ifeq ($(CONFIG_SOFTIRQ),y)
 HW_C_SRCS += common/softirq.c
-#endif
+endif
 HW_C_SRCS += common/schedule.c
 HW_C_SRCS += common/event.c
 ifeq ($(CONFIG_SCHED_NOOP),y)
