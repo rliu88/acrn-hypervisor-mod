@@ -28,6 +28,9 @@
 #include <sgx.h>
 #include <uart16550.h>
 #include <boot.h>
+#include <tsc.h>
+#include <udelay.h>
+#include <timecount.h>
 
 #define CPU_UP_TIMEOUT		100U /* millisecond */
 #define CPU_DOWN_TIMEOUT	100U /* millisecond */
@@ -44,7 +47,7 @@ static void init_pcpu_xsave(void);
 static void set_current_pcpu_id(uint16_t pcpu_id);
 static void print_hv_banner(void);
 static uint16_t get_pcpu_id_from_lapic_id(uint32_t lapic_id);
-static uint64_t start_tsc __attribute__((__section__(".bss_noinit")));
+static uint64_t start_timecnt __attribute__((__section__(".bss_noinit")));
 
 /**
  * @pre phys_cpu_num <= MAX_PCPU_NUM
@@ -119,7 +122,7 @@ void init_pcpu_pre(bool is_bsp)
 
 	if (is_bsp) {
 		pcpu_id = BSP_CPU_ID;
-		start_tsc = rdtsc();
+		start_timecnt = get_timecount();
 
 		/* Get CPU capabilities thru CPUID, including the physical address bit
 		 * limit which is required for initializing paging.
@@ -219,7 +222,7 @@ void init_pcpu_post(uint16_t pcpu_id)
 				HV_FULL_VERSION,
 				HV_BUILD_TIME, HV_BUILD_VERSION, HV_BUILD_TYPE,
 				HV_DAILY_TAG,
-				HV_BUILD_USER, HV_CONFIG_TOOL, ticks_to_us(start_tsc));
+				HV_BUILD_USER, HV_CONFIG_TOOL, ticks_to_us(start_timecnt));
 
 		pr_acrnlog("API version %u.%u",
 				HV_API_MAJOR_VERSION, HV_API_MINOR_VERSION);
