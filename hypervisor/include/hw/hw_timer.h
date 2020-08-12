@@ -9,7 +9,6 @@
 
 #include <types.h>
 
-void timer_expired_handler(__unused uint32_t irq, __unused void *data);
 void set_timeout(uint64_t timeout);
 void init_hw_timer(void);
 

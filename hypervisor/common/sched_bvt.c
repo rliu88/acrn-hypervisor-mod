@@ -7,7 +7,7 @@
 #include <list.h>
 #include <per_cpu.h>
 #include <schedule.h>
-#include <timecount.h>
+#include <cycles.h>
 
 #define BVT_MCU_MS	1U
 /* context switch allowance */
@@ -159,7 +159,7 @@ static int sched_bvt_init(struct sched_control *ctl)
 
 	/* The tick_timer is periodically */
 	initialize_timer(&bvt_ctl->tick_timer, sched_tick_handler, ctl,
-			get_timecount() + tick_period, TICK_MODE_PERIODIC, tick_period);
+			get_cpu_cycles() + tick_period, TICK_MODE_PERIODIC, tick_period);
 
 	if (add_timer(&bvt_ctl->tick_timer) < 0) {
 		pr_err("Failed to add schedule tick timer!");
@@ -201,7 +201,7 @@ static uint64_t p2v(uint64_t phy_time, uint64_t ratio)
 static void update_vt(struct thread_object *obj)
 {
 	struct sched_bvt_data *data;
-	uint64_t now = get_timecount();
+	uint64_t now = get_cpu_cycles();
 	uint64_t v_delta, delta_mcu = 0U;
 
 	data = (struct sched_bvt_data *)obj->data;
@@ -230,7 +230,7 @@ static struct thread_object *sched_bvt_pick_next(struct sched_control *ctl)
 	struct list_head *first, *sec;
 	struct thread_object *next = NULL;
 	struct thread_object *current = ctl->curr_obj;
-	uint64_t now = get_timecount();
+	uint64_t now = get_cpu_cycles();
 	uint64_t delta_mcu = 0U;
 
 	if (!is_idle_thread(current)) {

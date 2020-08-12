@@ -27,12 +27,12 @@ static uint64_t rdtsc(void)
 	return ((uint64_t)hi << 32U) | lo;
 }
 
-uint32_t get_frequency_khz(void)
+uint32_t get_cpu_freq(void)
 {
 	return tsc_khz;
 }
 
-uint64_t get_timecount(void)
+uint64_t get_cpu_cycles(void)
 {
     return rdtsc();
 }

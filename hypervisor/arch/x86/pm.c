@@ -18,7 +18,7 @@
 #include <vtd.h>
 #include <lapic.h>
 #include <udelay.h>
-#include <timecount.h>
+#include <cycles.h>
 
 struct cpu_context cpu_ctx;
 
@@ -165,7 +165,7 @@ void shutdown_system(void)
 
 static void suspend_tsc(__unused void *data)
 {
-	per_cpu(tsc_suspend, get_pcpu_id()) = get_timecount();
+	per_cpu(tsc_suspend, get_pcpu_id()) = get_cpu_cycles();
 }
 
 static void resume_tsc(__unused void *data)

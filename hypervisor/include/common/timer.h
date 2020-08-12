@@ -8,7 +8,7 @@
 #define TIMER_H
 
 #include <list.h>
-#include <timecount.h>
+#include <cycles.h>
 
 /**
  * @brief Timer
@@ -52,7 +52,7 @@ struct hv_timer {
  * @param[in] timer Pointer to timer.
  * @param[in] func irq callback if time reached.
  * @param[in] priv_data func private data.
- * @param[in] fire_tsc tsc deadline to interrupt.
+ * @param[in] timeout deadline to interrupt.
  * @param[in] mode timer mode.
  * @param[in] period_in_cycle period of the periodic timer in unit of TSC cycles.
  *
@@ -63,12 +63,12 @@ struct hv_timer {
  */
 static inline void initialize_timer(struct hv_timer *timer,
 				timer_handle_t func, void *priv_data,
-				uint64_t fire_tsc, int32_t mode, uint64_t period_in_cycle)
+				uint64_t timeout, int32_t mode, uint64_t period_in_cycle)
 {
 	if (timer != NULL) {
 		timer->func = func;
 		timer->priv_data = priv_data;
-		timer->timeout = fire_tsc;
+		timer->timeout = timeout;
 		timer->mode = mode;
 		timer->period_in_cycle = period_in_cycle;
 		INIT_LIST_HEAD(&timer->node);
@@ -84,7 +84,7 @@ static inline void initialize_timer(struct hv_timer *timer,
  */
 static inline bool timer_expired(const struct hv_timer *timer)
 {
-	return ((timer->timeout == 0UL) || (get_timecount() >= timer->timeout));
+	return ((timer->timeout == 0UL) || (get_cpu_cycles() >= timer->timeout));
 }
 
 /**

@@ -30,7 +30,7 @@
 #include <boot.h>
 #include <tsc.h>
 #include <udelay.h>
-#include <timecount.h>
+#include <cycles.h>
 
 #define CPU_UP_TIMEOUT		100U /* millisecond */
 #define CPU_DOWN_TIMEOUT	100U /* millisecond */
@@ -122,7 +122,7 @@ void init_pcpu_pre(bool is_bsp)
 
 	if (is_bsp) {
 		pcpu_id = BSP_CPU_ID;
-		start_timecnt = get_timecount();
+		start_timecnt = get_cpu_cycles();
 
 		/* Get CPU capabilities thru CPUID, including the physical address bit
 		 * limit which is required for initializing paging.
@@ -222,7 +222,7 @@ void init_pcpu_post(uint16_t pcpu_id)
 				HV_FULL_VERSION,
 				HV_BUILD_TIME, HV_BUILD_VERSION, HV_BUILD_TYPE,
 				HV_DAILY_TAG,
-				HV_BUILD_USER, HV_CONFIG_TOOL, ticks_to_us(start_timecnt));
+				HV_BUILD_USER, HV_CONFIG_TOOL, cycles_to_us(start_timecnt));
 
 		pr_acrnlog("API version %u.%u",
 				HV_API_MAJOR_VERSION, HV_API_MINOR_VERSION);

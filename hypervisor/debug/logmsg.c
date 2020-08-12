@@ -56,7 +56,7 @@ void do_logmsg(uint32_t severity, const char *fmt, ...)
 	timestamp = rdtsc();
 
 	/* Scale time-stamp appropriately */
-	timestamp = ticks_to_us(timestamp);
+	timestamp = cycles_to_us(timestamp);
 
 	/* Get CPU ID */
 	pcpu_id = get_pcpu_id();

@@ -9,7 +9,7 @@
 #include <softirq.h>
 #include <cpuid.h>
 #include <trace.h>
-#include <timecount.h>
+#include <cycles.h>
 #include <hw_timer.h>
 
 #define MAX_TIMER_ACTIONS	32U
@@ -78,7 +78,7 @@ int32_t add_timer(struct hv_timer *timer)
 
 		/* limit minimal periodic timer cycle period */
 		if (timer->mode == TICK_MODE_PERIODIC) {
-			timer->period_in_cycle = max(timer->period_in_cycle, us_to_ticks(MIN_TIMER_PERIOD_US));
+			timer->period_in_cycle = max(timer->period_in_cycle, us_to_cycles(MIN_TIMER_PERIOD_US));
 		}
 
 		pcpu_id  = get_pcpu_id();
@@ -123,7 +123,7 @@ static void timer_softirq(uint16_t pcpu_id)
 	struct hv_timer *timer;
 	struct list_head *pos, *n;
 	uint32_t tries = MAX_TIMER_ACTIONS;
-	uint64_t current_timecnt = get_timecount();
+	uint64_t current_timecnt = get_cpu_cycles();
 
 	/* handle passed timer */
 	cpu_timer = &per_cpu(cpu_timers, pcpu_id);
@@ -160,20 +160,11 @@ static void timer_softirq(uint16_t pcpu_id)
 void timer_init(void)
 {
 	uint16_t pcpu_id = get_pcpu_id();
-	int32_t retval = 0;
 
 	init_percpu_timer(pcpu_id);
 
 	if (pcpu_id == BSP_CPU_ID) {
 		register_softirq(SOFTIRQ_TIMER, timer_softirq);
-
-		retval = request_irq(TIMER_IRQ, (irq_action_t)timer_expired_handler, NULL, IRQF_NONE);
-		if (retval < 0) {
-			pr_err("Timer setup failed");
-		}
-	}
-
-	if (retval >= 0) {
 		init_hw_timer();
 	}
 }

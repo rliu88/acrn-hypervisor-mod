@@ -23,7 +23,7 @@
 #include <vm_config.h>
 #include <pci.h>
 #include <platform_caps.h>
-#include <timecount.h>
+#include <cycles.h>
 
 #define DBG_IOMMU 0
 
@@ -247,11 +247,11 @@ static inline void dmar_wait_completion(const struct dmar_drhd_rt *dmar_unit, ui
 	uint32_t mask, uint32_t pre_condition, uint32_t *status)
 {
 	/* variable start isn't used when built as release version */
-	__unused uint64_t start = get_timecount();
+	__unused uint64_t start = get_cpu_cycles();
 
 	do {
 		*status = iommu_read32(dmar_unit, offset);
-		ASSERT(((get_timecount() - start) < CYCLES_PER_MS),
+		ASSERT(((get_cpu_cycles() - start) < CYCLES_PER_MS),
 			"DMAR OP Timeout!");
 		asm_pause();
 	} while( (*status & mask) == pre_condition);
@@ -565,9 +565,9 @@ static void dmar_issue_qi_request(struct dmar_drhd_rt *dmar_unit, struct dmar_en
 	qi_status = DMAR_INV_STATUS_INCOMPLETE;
 	iommu_write32(dmar_unit, DMAR_IQT_REG, dmar_unit->qi_tail);
 
-	start = get_timecount();
+	start = get_cpu_cycles();
 	while (qi_status != DMAR_INV_STATUS_COMPLETED) {
-		if ((get_timecount() - start) > CYCLES_PER_MS) {
+		if ((get_cpu_cycles() - start) > CYCLES_PER_MS) {
 			pr_err("DMAR OP Timeout! @ %s", __func__);
 			break;
 		}

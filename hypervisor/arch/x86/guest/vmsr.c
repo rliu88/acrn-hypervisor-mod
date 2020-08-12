@@ -18,7 +18,7 @@
 #include <rdt.h>
 #include <trace.h>
 #include <logmsg.h>
-#include <timecount.h>
+#include <cycles.h>
 
 #define INTERCEPT_DISABLE		(0U)
 #define INTERCEPT_READ			(1U << 0U)
@@ -586,7 +586,7 @@ static void set_guest_tsc(struct acrn_vcpu *vcpu, uint64_t guest_timecnt)
 {
 	uint64_t tsc_delta, tsc_offset_delta, tsc_adjust;
 
-	tsc_delta = guest_timecnt - get_timecount();
+	tsc_delta = guest_timecnt - get_cpu_cycles();
 
 	/* the delta between new and existing TSC_OFFSET */
 	tsc_offset_delta = tsc_delta - exec_vmread64(VMX_TSC_OFFSET_FULL);

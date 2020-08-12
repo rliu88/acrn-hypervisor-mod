@@ -12,7 +12,7 @@
 #include <logmsg.h>
 #include <vmx.h>
 #include <hyperv.h>
-#include <timecount.h>
+#include <cycles.h>
 
 #define DBG_LEVEL_HYPERV		6U
 
@@ -71,7 +71,7 @@ hyperv_get_tsc_scale_offset(struct acrn_vm *vm, uint64_t *scale, uint64_t *offse
 		 *     + TscOffset
 		 */
 
-		uint64_t ret, khz = get_frequency_khz();
+		uint64_t ret, khz = get_cpu_freq();
 
 		/* ret = (10000U << 64U) / get_tsc_khz() */
 		ret = u64_shl64_div_u64(10000U, khz);
@@ -120,7 +120,7 @@ hyperv_get_ref_count(struct acrn_vm *vm)
 	uint64_t tsc, tsc_scale, tsc_offset, ret;
 
 	/* currently only "use tsc offsetting" is set to 1 */
-	tsc = get_timecount() + exec_vmread64(VMX_TSC_OFFSET_FULL);
+	tsc = get_cpu_cycles() + exec_vmread64(VMX_TSC_OFFSET_FULL);
 
 	hyperv_get_tsc_scale_offset(vm, &tsc_scale, &tsc_offset);
 
