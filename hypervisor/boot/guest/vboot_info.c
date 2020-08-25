@@ -8,7 +8,7 @@
 #include <rtl.h>
 #include <errno.h>
 #include <x86/per_cpu.h>
-#include <x86/irq.h>
+#include <irq.h>
 #include <x86/boot/boot_context.h>
 #include <multiboot.h>
 #include <x86/pgtable.h>
