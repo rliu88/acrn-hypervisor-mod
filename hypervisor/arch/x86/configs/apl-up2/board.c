@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include <board.h>
-#include <msr.h>
-#include <vtd.h>
+#include <x86/board.h>
+#include <x86/msr.h>
+#include <x86/vtd.h>
 #include <pci.h>
 
 #ifndef CONFIG_ACPI_PARSE_ENABLED

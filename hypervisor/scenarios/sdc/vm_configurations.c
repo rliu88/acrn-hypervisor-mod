@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include <vm_config.h>
+#include <x86/vm_config.h>
 #include <vuart.h>
-#include <pci_dev.h>
+#include <x86/pci_dev.h>
 
 struct acrn_vm_config vm_configs[CONFIG_MAX_VM_NUM] = {
 	{	/* VM0 */

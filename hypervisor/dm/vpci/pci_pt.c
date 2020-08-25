@@ -26,9 +26,9 @@
 *
 * $FreeBSD$
 */
-#include <vm.h>
-#include <ept.h>
-#include <mmu.h>
+#include <x86/guest/vm.h>
+#include <x86/guest/ept.h>
+#include <x86/mmu.h>
 #include <logmsg.h>
 #include "vpci_priv.h"
 

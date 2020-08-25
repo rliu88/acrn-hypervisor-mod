@@ -7,7 +7,7 @@
 #include <types.h>
 #include <errno.h>
 #include <multiboot.h>
-#include <pgtable.h>
+#include <x86/pgtable.h>
 
 /**
  * @pre mbi != NULL && mb2_tag_mmap != NULL

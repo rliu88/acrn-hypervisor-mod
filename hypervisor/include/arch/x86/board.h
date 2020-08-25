@@ -8,7 +8,7 @@
 
 #include <types.h>
 #include <misc_cfg.h>
-#include <host_pm.h>
+#include <x86/host_pm.h>
 #include <pci.h>
 
 /* forward declarations */

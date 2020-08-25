@@ -36,7 +36,7 @@
 #define MAX_MODULE_NUM			(2U * PRE_VM_NUM + 2U * SOS_VM_NUM)
 
 #ifndef ASSEMBLER
-#include <zeropage.h>
+#include <x86/zeropage.h>
 
 extern char *efiloader_sig;
 

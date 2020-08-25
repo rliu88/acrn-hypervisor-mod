@@ -15,9 +15,9 @@ class RDT(enum.Enum):
     MBA = 2
 
 INCLUDE_HEADER = """
-#include <board.h>
-#include <vtd.h>
-#include <msr.h>
+#include <x86/board.h>
+#include <x86/vtd.h>
+#include <x86/msr.h>
 #include <pci.h>"""
 
 MSR_IA32_L2_MASK_BASE = 0x00000D10

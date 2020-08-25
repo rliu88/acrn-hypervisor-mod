@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include <bits.h>
-#include <vm_config.h>
+#include <x86/lib/bits.h>
+#include <x86/vm_config.h>
 #include <logmsg.h>
-#include <rdt.h>
-#include <pgtable.h>
+#include <x86/rdt.h>
+#include <x86/pgtable.h>
 #include <vuart.h>
 
 static uint8_t rtvm_uuid1[16] = POST_RTVM_UUID1;

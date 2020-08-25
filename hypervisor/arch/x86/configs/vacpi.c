@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include <vm.h>
-#include <per_cpu.h>
+#include <x86/guest/vm.h>
+#include <x86/per_cpu.h>
 #include <vacpi.h>
-#include <pgtable.h>
+#include <x86/pgtable.h>
 #include <platform_acpi_info.h>
 
 /* ACPI tables for pre-launched VM and SOS */

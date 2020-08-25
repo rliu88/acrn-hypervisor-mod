@@ -6,7 +6,7 @@
 
 #include <types.h>
 #include <errno.h>
-#include <vm.h>
+#include <x86/guest/vm.h>
 
 int32_t hcall_debug(__unused struct acrn_vm *vm, __unused uint64_t param1, __unused uint64_t param2,
 			__unused uint64_t hypcall_id)

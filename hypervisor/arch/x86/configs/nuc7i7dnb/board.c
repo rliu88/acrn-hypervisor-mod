@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include <board.h>
-#include <vtd.h>
+#include <x86/board.h>
+#include <x86/vtd.h>
 #include <pci.h>
 
 static struct dmar_dev_scope drhd0_dev_scope[DRHD0_DEV_CNT] = {

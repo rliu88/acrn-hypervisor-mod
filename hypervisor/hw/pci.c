@@ -32,16 +32,16 @@
  *
  */
 #include <types.h>
-#include <spinlock.h>
-#include <io.h>
-#include <pgtable.h>
+#include <x86/lib/spinlock.h>
+#include <x86/io.h>
+#include <x86/pgtable.h>
 #include <pci.h>
 #include <uart16550.h>
 #include <logmsg.h>
-#include <pci_dev.h>
-#include <vtd.h>
-#include <bits.h>
-#include <board.h>
+#include <x86/pci_dev.h>
+#include <x86/vtd.h>
+#include <x86/lib/bits.h>
+#include <x86/board.h>
 #include <platform_acpi_info.h>
 
 static spinlock_t pci_device_lock;

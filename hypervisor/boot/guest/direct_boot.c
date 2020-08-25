@@ -7,11 +7,11 @@
 /* this is for direct guest_boot method */
 
 #include <types.h>
-#include <e820.h>
-#include <cpu.h>
+#include <x86/e820.h>
+#include <x86/cpu.h>
 #include <multiboot.h>
 #include <direct_boot.h>
-#include <mmu.h>
+#include <x86/mmu.h>
 
 /* AP trampoline code buffer base address. */
 static uint64_t ap_trampoline_buf;

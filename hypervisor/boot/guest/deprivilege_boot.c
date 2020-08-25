@@ -8,13 +8,13 @@
 
 #include <types.h>
 #include <acrn_common.h>
-#include <pgtable.h>
+#include <x86/pgtable.h>
 #include <logmsg.h>
 #include <rtl.h>
-#include <vlapic.h>
-#include <lapic.h>
-#include <per_cpu.h>
-#include <guest/vm.h>
+#include <x86/guest/vlapic.h>
+#include <x86/lapic.h>
+#include <x86/per_cpu.h>
+#include <x86/guest/vm.h>
 #include <multiboot.h>
 #include <deprivilege_boot.h>
 

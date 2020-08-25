@@ -7,7 +7,7 @@
 #include <types.h>
 #include <errno.h>
 #include <softirq.h>
-#include <cpuid.h>
+#include <x86/cpuid.h>
 #include <trace.h>
 #include <cycles.h>
 #include <hw_timer.h>

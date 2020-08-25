@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include <vm.h>
+#include <x86/guest/vm.h>
 #include <types.h>
-#include <pgtable.h>
+#include <x86/pgtable.h>
 #include <acpi.h>
 #include <multiboot.h>
 #include <vboot.h>

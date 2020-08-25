@@ -17,9 +17,9 @@
  * Version: V1.0
  */
 
-#include <board.h>
-#include <vtd.h>
-#include <msr.h>
+#include <x86/board.h>
+#include <x86/vtd.h>
+#include <x86/msr.h>
 #include <pci.h>
 static struct dmar_dev_scope drhd0_dev_scope[DRHD0_DEV_CNT] = {
 	{
