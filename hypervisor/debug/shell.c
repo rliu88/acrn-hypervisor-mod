@@ -22,6 +22,7 @@
 #include <shell.h>
 #include <vmcs.h>
 #include <host_pm.h>
+#include <dbg_cmd.h>
 
 #define TEMP_STR_SIZE		60U
 #define MAX_STR_SIZE		256U

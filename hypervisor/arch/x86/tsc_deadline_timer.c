@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Intel Corporation. All rights reserved.
+ * Copyright (C) 2020 Intel Corporation. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -26,21 +26,22 @@ void set_timeout(uint64_t timeout)
 void init_hw_timer(void)
 {
 	uint32_t val;
-    int32_t retval = 0;
+	int32_t retval = 0;
 
-    retval = request_irq(TIMER_IRQ, (irq_action_t)timer_expired_handler, NULL, IRQF_NONE);
-    if (retval < 0) {
-        pr_err("Timer setup failed");
-    }
+	if (get_pcpu_id() == BSP_CPU_ID) {
+		retval = request_irq(TIMER_IRQ, (irq_action_t)timer_expired_handler, NULL, IRQF_NONE);
+		if (retval < 0) {
+			pr_err("Timer setup failed");
+		}
+	}
 
-    if (retval > 0)
-    {
-        val = TIMER_VECTOR;
-        val |= APIC_LVTT_TM_TSCDLT; /* TSC deadline and unmask */
-        msr_write(MSR_IA32_EXT_APIC_LVT_TIMER, val);
-        cpu_memory_barrier();
+	if (retval >= 0) {
+		val = TIMER_VECTOR;
+		val |= APIC_LVTT_TM_TSCDLT; /* TSC deadline and unmask */
+		msr_write(MSR_IA32_EXT_APIC_LVT_TIMER, val);
+		cpu_memory_barrier();
 
-        /* disarm timer */
-        msr_write(MSR_IA32_TSC_DEADLINE, 0UL);
-    }
+		/* disarm timer */
+		msr_write(MSR_IA32_TSC_DEADLINE, 0UL);
+	}
 }

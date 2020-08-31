@@ -53,7 +53,7 @@ void do_logmsg(uint32_t severity, const char *fmt, ...)
 	}
 
 	/* Get time-stamp value */
-	timestamp = rdtsc();
+	timestamp = get_cpu_cycles();
 
 	/* Scale time-stamp appropriately */
 	timestamp = cycles_to_us(timestamp);

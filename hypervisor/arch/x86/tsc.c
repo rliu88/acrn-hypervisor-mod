@@ -11,7 +11,7 @@
 #include <trace.h>
 #include <cpu_caps.h>
 
-#define CAL_MS			    10U
+#define CAL_MS			10U
 
 /**
  * Frequency in KHz (where 1KHz = 1000Hz). Only valid after
@@ -34,7 +34,7 @@ uint32_t get_cpu_freq(void)
 
 uint64_t get_cpu_cycles(void)
 {
-    return rdtsc();
+	return rdtsc();
 }
 
 static uint64_t pit_calibrate_tsc(uint32_t cal_ms_arg)
@@ -109,6 +109,7 @@ static uint64_t native_calibrate_tsc(void)
 
 	if ((tsc_hz == 0UL) && (cpu_info->cpuid_level >= 0x16U)) {
 		uint32_t eax_base_mhz, ebx_max_mhz, ecx_bus_mhz, edx;
+
 		cpuid_subleaf(0x16U, 0x0U, &eax_base_mhz, &ebx_max_mhz, &ecx_bus_mhz, &edx);
 		tsc_hz = (uint64_t) eax_base_mhz * 1000000U;
 	}
@@ -119,10 +120,10 @@ static uint64_t native_calibrate_tsc(void)
 void calibrate_tsc(void)
 {
 	uint64_t tsc_hz;
+
 	tsc_hz = native_calibrate_tsc();
 	if (tsc_hz == 0U) {
 		tsc_hz = pit_calibrate_tsc(CAL_MS);
 	}
 	tsc_khz = (uint32_t)(tsc_hz / 1000UL);
-	printf("%s, tsc_khz=%lu\n", __func__, tsc_khz);
 }

@@ -165,6 +165,7 @@ void timer_init(void)
 
 	if (pcpu_id == BSP_CPU_ID) {
 		register_softirq(SOFTIRQ_TIMER, timer_softirq);
-		init_hw_timer();
 	}
+
+	init_hw_timer();
 }

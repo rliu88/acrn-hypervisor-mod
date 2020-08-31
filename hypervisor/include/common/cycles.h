@@ -1,11 +1,11 @@
 /*
- * Copyright (C) 2018 Intel Corporation. All rights reserved.
+ * Copyright (C) 2020 Intel Corporation. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef TIMECOUNT_H
-#define TIMECOUNT_H
+#ifndef CYCLES_H
+#define CYCLES_H
 
 #include <types.h>
 
