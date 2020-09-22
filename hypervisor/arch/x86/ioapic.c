@@ -425,8 +425,6 @@ void ioapic_setup_irqs(void)
 	uint32_t gsi = 0U;
 	uint32_t vr;
 
-	spinlock_init(&ioapic_lock);
-
 	for (ioapic_id = 0U;
 	     ioapic_id < ioapic_num; ioapic_id++) {
 		void *addr;
@@ -471,6 +469,30 @@ void ioapic_setup_irqs(void)
 
 	/* system max gsi numbers */
 	ioapic_max_nr_gsi = gsi;
+}
+
+void init_ioapic(void)
+{
+	uint8_t ioapic_id;
+	union ioapic_rte rte;
+
+	rte.full = 0UL;
+	rte.bits.intr_mask  = IOAPIC_RTE_MASK_SET;
+
+	spinlock_init(&ioapic_lock);
+
+	for (ioapic_id = 0U;
+	     ioapic_id < ioapic_num; ioapic_id++) {
+		void *addr;
+		uint32_t pin, nr_pins;
+
+		addr = map_ioapic(ioapic_array[ioapic_id].addr);
+
+		nr_pins = ioapic_array[ioapic_id].nr_pins;
+		for (pin = 0U; pin < nr_pins; pin++) {
+			ioapic_set_rte_entry(addr, pin, rte);
+		}
+	}
 }
 
 void suspend_ioapic(void)
