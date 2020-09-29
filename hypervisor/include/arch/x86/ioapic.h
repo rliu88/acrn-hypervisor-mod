@@ -8,6 +8,9 @@
 #define IOAPIC_H
 
 #include <x86/apicreg.h>
+#include <x86/ioapic_common.h>
+
+extern uint8_t ioapic_num;
 
 #define NR_LEGACY_IRQ		16U
 #define NR_LEGACY_PIN		NR_LEGACY_IRQ
@@ -18,6 +21,8 @@ struct ioapic_info {
 	uint32_t gsi_base;	/* Global System Interrupt where this IO-APIC's interrupt input start */
 	uint32_t nr_pins;	/* Number of Interrupt inputs as determined by Max. Redir Entry Register */
 };
+
+extern struct ioapic_info ioapic_array[CONFIG_MAX_IOAPIC_NUM];
 
 void ioapic_setup_irqs(void);
 void init_ioapic();

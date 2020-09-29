@@ -207,7 +207,9 @@ BOOT_C_SRCS += boot/reloc.c
 
 # hardware management component
 HW_S_SRCS += arch/x86/idt.S
+HW_C_SRCS += arch/x86/ioapic_common.c
 HW_C_SRCS += arch/x86/ioapic.c
+HW_C_SRCS += arch/x86/ioapic_irq.c
 HW_C_SRCS += arch/x86/lapic.c
 HW_C_SRCS += arch/x86/cpu.c
 HW_C_SRCS += arch/x86/cpu_caps.c
