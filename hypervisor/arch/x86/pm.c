@@ -15,7 +15,7 @@
 #include <x86/vmx.h>
 #include <console.h>
 #include <x86/ioapic.h>
-#include <x86/vtd.h>
+#include <hw/iommu.h>
 #include <x86/lapic.h>
 #include <udelay.h>
 #include <cycles.h>

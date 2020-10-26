@@ -30,7 +30,7 @@
 #include <errno.h>
 #include <ptdev.h>
 #include <x86/guest/vm.h>
-#include <x86/vtd.h>
+#include <hw/iommu.h>
 #include <x86/io.h>
 #include <x86/mmu.h>
 #include <x86/pci_dev.h>

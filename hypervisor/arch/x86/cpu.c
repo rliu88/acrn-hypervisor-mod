@@ -9,7 +9,7 @@
 #include <x86/page.h>
 #include <x86/e820.h>
 #include <x86/mmu.h>
-#include <x86/vtd.h>
+#include <hw/iommu.h>
 #include <x86/lapic.h>
 #include <x86/per_cpu.h>
 #include <x86/cpufeatures.h>

@@ -10,7 +10,7 @@
 #include <x86/page.h>
 #include <x86/mmu.h>
 #include <x86/guest/trusty.h>
-#include <x86/vtd.h>
+#include <hw/iommu.h>
 #include <x86/security.h>
 #include <x86/guest/vm.h>
 

@@ -8,7 +8,7 @@
 #include <errno.h>
 #include <x86/lib/bits.h>
 #include <x86/guest/vm.h>
-#include <x86/vtd.h>
+#include <hw/iommu.h>
 #include <ptdev.h>
 #include <x86/per_cpu.h>
 #include <x86/ioapic.h>
@@ -79,7 +79,7 @@ static void ptirq_free_irte(const struct ptirq_remapping_info *entry)
 		intr_src.src.ioapic_id = ioapic_irq_to_ioapic_id(entry->allocated_pirq);
 	}
 
-	dmar_free_irte(&intr_src, (uint16_t)entry->allocated_pirq);
+	iommu_ir_free_irte(&intr_src, (uint16_t)entry->allocated_pirq);
 }
 
 /*
@@ -126,7 +126,7 @@ static void ptirq_build_physical_msi(struct acrn_vm *vm,
 	intr_src.is_msi = true;
 	intr_src.pid_paddr = pid_paddr;
 	intr_src.src.msi.value = entry->phys_sid.msi_id.bdf;
-	ret = dmar_assign_irte(&intr_src, &irte, (uint16_t)entry->allocated_pirq);
+	ret = iommu_ir_assign_irte(&intr_src, &irte, (uint16_t)entry->allocated_pirq);
 
 	if (ret == 0) {
 		/*
@@ -223,7 +223,7 @@ ptirq_build_physical_rte(struct acrn_vm *vm, struct ptirq_remapping_info *entry)
 		intr_src.is_msi = false;
 		intr_src.pid_paddr = 0UL;
 		intr_src.src.ioapic_id = ioapic_irq_to_ioapic_id(phys_irq);
-		ret = dmar_assign_irte(&intr_src, &irte, (uint16_t)phys_irq);
+		ret = iommu_ir_assign_irte(&intr_src, &irte, (uint16_t)phys_irq);
 
 		if (ret == 0) {
 			ir_index.index = (uint16_t)phys_irq;
@@ -316,7 +316,7 @@ remove_msix_remapping(const struct acrn_vm *vm, uint16_t phys_bdf, uint32_t entr
 
 		intr_src.is_msi = true;
 		intr_src.src.msi.value = entry->phys_sid.msi_id.bdf;
-		dmar_free_irte(&intr_src, (uint16_t)entry->allocated_pirq);
+		iommu_ir_free_irte(&intr_src, (uint16_t)entry->allocated_pirq);
 
 		dev_dbg(DBG_LEVEL_IRQ, "VM%d MSIX remove vector mapping vbdf-pbdf:0x%x-0x%x idx=%d",
 			vm->vm_id, entry->virt_sid.msi_id.bdf, phys_bdf, entry_nr);
@@ -405,7 +405,7 @@ static void remove_intx_remapping(const struct acrn_vm *vm, uint32_t virt_gsi, e
 			intr_src.is_msi = false;
 			intr_src.src.ioapic_id = ioapic_irq_to_ioapic_id(phys_irq);
 
-			dmar_free_irte(&intr_src, (uint16_t)phys_irq);
+			iommu_ir_free_irte(&intr_src, (uint16_t)phys_irq);
 			dev_dbg(DBG_LEVEL_IRQ,
 				"deactive %s intx entry:pgsi=%d, pirq=%d ",
 				(vgsi_ctlr == INTX_CTLR_PIC) ? "vPIC" : "vIOAPIC",

@@ -13,7 +13,7 @@
 #include <x86/guest/vm_reset.h>
 #include <x86/lib/bits.h>
 #include <multiboot.h>
-#include <x86/vtd.h>
+#include <hw/iommu.h>
 #include <reloc.h>
 #include <x86/guest/ept.h>
 #include <x86/guest/guest_pm.h>
