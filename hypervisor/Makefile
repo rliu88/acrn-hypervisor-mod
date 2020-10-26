@@ -207,7 +207,9 @@ BOOT_C_SRCS += boot/reloc.c
 
 # hardware management component
 HW_S_SRCS += arch/x86/idt.S
+HW_C_SRCS += arch/x86/ioapic_common.c
 HW_C_SRCS += arch/x86/ioapic.c
+HW_C_SRCS += arch/x86/ioapic_irq.c
 HW_C_SRCS += arch/x86/lapic.c
 HW_C_SRCS += arch/x86/cpu.c
 HW_C_SRCS += arch/x86/cpu_caps.c
@@ -221,6 +223,9 @@ HW_C_SRCS += arch/x86/notify.c
 HW_C_SRCS += arch/x86/vtd.c
 HW_C_SRCS += arch/x86/gdt.c
 HW_C_SRCS += arch/x86/irq.c
+HW_C_SRCS += arch/x86/irq_init.c
+HW_C_SRCS += arch/x86/exception.c
+HW_C_SRCS += arch/x86/nmi.c
 HW_C_SRCS += arch/x86/tsc.c
 HW_C_SRCS += arch/x86/tsc_deadline_timer.c
 HW_C_SRCS += common/timer.c
