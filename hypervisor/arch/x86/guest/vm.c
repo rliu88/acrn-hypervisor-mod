@@ -18,7 +18,6 @@
 #include <x86/guest/ept.h>
 #include <x86/guest/guest_pm.h>
 #include <console.h>
-#include <ptdev.h>
 #include <x86/guest/vmcs.h>
 #include <x86/pgtable.h>
 #include <x86/mmu.h>

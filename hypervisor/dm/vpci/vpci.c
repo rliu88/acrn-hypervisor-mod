@@ -28,7 +28,7 @@
 */
 
 #include <errno.h>
-#include <ptdev.h>
+#include <ptintr.h>
 #include <x86/guest/vm.h>
 #include <hw/iommu.h>
 #include <x86/io.h>
@@ -290,7 +290,7 @@ void deinit_vpci(struct acrn_vm *vm)
 		}
 	}
 
-	ptdev_release_all_entries(vm);
+	ptintr_remove_and_unmap_vm(vm);
 
 	/* Free iommu */
 	destroy_iommu_domain(vm->iommu);

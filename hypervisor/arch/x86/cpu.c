@@ -21,7 +21,7 @@
 #include <version.h>
 #include <x86/vmx.h>
 #include <x86/msr.h>
-#include <ptdev.h>
+#include <ptintr.h>
 #include <logmsg.h>
 #include <x86/rdt.h>
 #include <vboot.h>
@@ -257,7 +257,7 @@ void init_pcpu_post(uint16_t pcpu_id)
 
 		hv_access_memory_region_update(get_mmcfg_base(), PCI_MMCONFIG_SIZE);
 		init_pci_pdev_list(); /* init_iommu must come before this */
-		ptdev_init();
+		ptintr_init();
 
 		if (init_sgx() != 0) {
 			panic("failed to initialize sgx!");
@@ -283,7 +283,7 @@ void init_pcpu_post(uint16_t pcpu_id)
 		init_interrupt(pcpu_id);
 
 		timer_init();
-		ptdev_init();
+		ptintr_init();
 
 		/* Wait for boot processor to signal all secondary cores to continue */
 		wait_sync_change(&pcpu_sync, 0UL);
